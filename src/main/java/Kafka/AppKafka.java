@@ -54,11 +54,17 @@ public class AppKafka {
     printStats(nMsg, timeStart);
   }
 
+  /**
+   * Muestra por la salida estandar algunos stats
+   * @param timeStart
+   * @param nMsg
+   */
   private static void printStats(int nMsg, long timeStart) {
     long timeEnd = System.currentTimeMillis();
-    double millis = (timeEnd - timeStart);
-    double vel = nMsg / (millis / 1000);
-    System.out.println("Tiempo total: " + (timeEnd - timeStart) + " milliseconds");
+    double diffMillis = timeEnd - timeStart;
+    double diffSec = diffMillis / 1000;
+    double vel = nMsg / diffSec;
+    System.out.println("Tiempo total: " + diffSec + " seconds");
     System.out.println("Velocidad: " + vel + " msg/seg");
   }
 
@@ -106,20 +112,20 @@ public class AppKafka {
    *
    * @param nMsg
    * @param topic
-   * @param numProd
-   * @param numCons
+   * @param nProd
+   * @param nCons
    * @throws InterruptedException
    */
-  public static void mainMultiThread(int nMsg, String topic, int numProd, int numCons) throws InterruptedException {
+  public static void mainMultiThread(int nMsg, String topic, int nProd, int nCons) throws InterruptedException {
     // Control producers
     System.out.println("PRODUCERS");
     long timeStart = System.currentTimeMillis();
 
     // START PRODUCERS
-    ArrayList<Thread> alProd = produceT(nMsg, numProd, topic);
+    ArrayList<Thread> alProd = produceT(nMsg, nProd, topic);
 
     // Wait to end
-    for (int i = 0; i < numProd; i++) {
+    for (int i = 0; i < nProd; i++) {
       alProd.get(i).join();
     }
 
@@ -130,10 +136,10 @@ public class AppKafka {
     timeStart = System.currentTimeMillis();
 
     // START CONSUMERS
-    ArrayList<Thread> alCons = consumeT(nMsg, numCons, topic);
+    ArrayList<Thread> alCons = consumeT(nMsg, nCons, topic);
 
     //Wait to end
-    for (int i = 0; i < numCons; i++) {
+    for (int i = 0; i < nCons; i++) {
       alCons.get(i).join();
     }
 
