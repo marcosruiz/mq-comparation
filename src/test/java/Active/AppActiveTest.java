@@ -20,6 +20,13 @@ public class AppActiveTest {
    */
 
   @Test
+  void testSec10K() throws JMSException {
+    String topic = "topic";
+    int nMsg = 10000;
+    mainSecuential(nMsg, topic);
+  }
+
+  @Test
   void testSec600K() throws JMSException {
     String topic = "topic";
     int nMsg = 600000;
@@ -31,8 +38,6 @@ public class AppActiveTest {
     String topic = "topic";
     int nMsg = 1000000;
     mainSecuential(nMsg, topic);
-    Runtime.getRuntime().totalMemory();
-    Runtime.getRuntime().freeMemory();
   }
 
   /**

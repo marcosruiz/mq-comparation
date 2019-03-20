@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public class AppRabbit {
 
   public static void main(String[] args) throws InterruptedException {
-    final int NUM_MSG = 10000;
-    final String TASK_QUEUE_NAME = "test_queue";
-    mainSecuential(NUM_MSG, TASK_QUEUE_NAME);
-    //    mainMultiThread(NUM_MSG, TASK_QUEUE_NAME, 1, 10);
+    final int nMsg = 10000;
+    final String topic = "test_queue";
+    mainSecuential(nMsg, topic);
+    //    mainMultiThread(nMsg, topic, 1, 10);
   }
 
   public static void mainSecuential(int nMsg, String topic) {

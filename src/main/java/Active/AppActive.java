@@ -14,15 +14,12 @@ public class AppActive {
     mainMultiThread(nMsg, topic, 10, 10);
   }
 
+  /**
+   * Producimos y consumimos con un hilo por productor y por consumidor
+   * @param nMsg
+   * @param topic
+   */
   public static void mainMultiThread(int nMsg, String topic, int nProd, int nCons) throws JMSException, InterruptedException {
-    // Create a ConnectionFactory
-    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
-    // Create a Connection
-    Connection connection = connectionFactory.createConnection();
-    connection.start();
-    // Create a Session
-    Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
     // START PRODUCERS
     System.out.println("PRODUCTOR");
     long timeStart = System.currentTimeMillis();
@@ -42,10 +39,6 @@ public class AppActive {
       alCons.get(i).join();
     }
     printStats(timeStart, nMsg);
-
-    // Clean up
-    session.close();
-    connection.close();
   }
 
 
@@ -88,35 +81,23 @@ public class AppActive {
   }
 
   /**
-   * Producimos y consumimos con un hilo por productor y por consumidor
+   * Producimos y consumimos
    * @param nMsg
    * @param topic
+   * @throws JMSException
    */
   public static void mainSecuential(int nMsg, String topic) throws JMSException {
-
-    // Create a ConnectionFactory
-    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
-    // Create a Connection
-    Connection connection = connectionFactory.createConnection();
-    connection.start();
-    // Create a Session
-    Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-
     //PRODUCTOR
     System.out.println("PRODUCTOR");
     long timeStart = System.currentTimeMillis();
-    produce(nMsg, session, topic);
+    produce(nMsg, topic);
     printStats(timeStart, nMsg);
 
     // CONSUMIDOR
     System.out.println("CONSUMIDOR");
     timeStart = System.currentTimeMillis();
-    consume(nMsg, session, topic);
+    consume(nMsg, topic);
     printStats(timeStart, nMsg);
-
-    // Clean up
-    session.close();
-    connection.close();
   }
 
   /**
@@ -125,15 +106,19 @@ public class AppActive {
    * @param nMsg
    */
   private static void printStats(long timeStart, int nMsg) {
+    long totalMem = Runtime.getRuntime().totalMemory();
+    long freeMem = Runtime.getRuntime().freeMemory();
+    long usedMem = totalMem-freeMem;
+    long maxMem = Runtime.getRuntime().maxMemory();
     long timeEnd = System.currentTimeMillis();
     double diffMillis = timeEnd - timeStart;
     double diffSec = diffMillis / 1000;
     double vel = nMsg / diffSec;
     System.out.println("Tiempo total: " + diffSec + " seconds");
     System.out.println("Velocidad: " + vel + " msg/seg");
+    System.out.println("Memory used: " + usedMem);
+    System.out.println("Memory max: " + maxMem);
   }
-
-
 
   public static void thread(Runnable runnable, boolean daemon) {
     Thread brokerThread = new Thread(runnable);
@@ -141,57 +126,13 @@ public class AppActive {
     brokerThread.start();
   }
 
-  public static void produce(int messages, Session session, String topic) {
-    try {
-
-      // Create the destination (Topic or Queue)
-      Destination destination = session.createQueue(topic);
-
-      // Create a MessageProducer from the Session to the Topic or Queue
-      MessageProducer producer = session.createProducer(destination);
-      producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-
-      // Send n messages: each message has a number as content
-      for (int i = 0; i < messages; i++) {
-        TextMessage message = session.createTextMessage(Integer.toString(i));
-        producer.send(message);
-        System.out.print("\r" + ((i + 1) * 100 / messages) + "%");
-      }
-      System.out.println("");
-
-    } catch (Exception e) {
-      System.out.println("Caught: " + e);
-      e.printStackTrace();
-    }
+  public static void produce(int nMsg, String topic) {
+    ProdActiveThread pat = new ProdActiveThread(nMsg, topic);
+    pat.run();
   }
 
-
-  public static void consume(int messages, Session session, String topic) {
-    try {
-      // Create the destination (Topic or Queue)
-      Destination destination = session.createQueue(topic);
-
-      // Create a MessageConsumer from the Session to the Topic or Queue
-      MessageConsumer consumer = session.createConsumer(destination);
-
-      // Wait for n messages
-      for (int i = 0; i < messages; i++) {
-        Message message = consumer.receive(1000);
-        if (message instanceof TextMessage) {
-          TextMessage textMessage = (TextMessage) message;
-          String text = textMessage.getText();
-          //          System.out.println("Received: " + text);
-          //          System.out.print("\r" + ((i+1)*100/messages) + "% : Received: " + text);
-        } else {
-          System.out.println("Received: " + message);
-        }
-      }
-      //      System.out.println();
-
-      consumer.close();
-    } catch (Exception e) {
-      System.out.println("Caught: " + e);
-      e.printStackTrace();
-    }
+  public static void consume(int nMsg, String topic) {
+    ConsActiveThread cat = new ConsActiveThread(nMsg, topic);
+    cat.run();
   }
 }
