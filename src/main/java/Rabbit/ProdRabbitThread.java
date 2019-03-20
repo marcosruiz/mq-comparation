@@ -1,28 +1,41 @@
-package Kafka;
+package Rabbit;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.MessageProperties;
 
-import java.util.Properties;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.concurrent.TimeoutException;
 
-public class ProdKafkaThread implements Runnable{
+public class ProdRabbitThread implements Runnable{
 
   private final String topic;
-  private final Properties props;
   private final int nMsg;
 
-  public ProdKafkaThread(Properties props, int nMsg, String topic){
-    this.props = props;
+  public ProdRabbitThread(int nMsg, String topic){
     this.nMsg = nMsg;
     this.topic = topic;
   }
+
   @Override
   public void run() {
-    Producer<String, String> producer = new KafkaProducer<>(props);
-    for (int i = 0; i < nMsg; i++) {
-      producer.send(new ProducerRecord<String, String>(topic, Integer.toString(i), Integer.toString(i)));
+    com.rabbitmq.client.ConnectionFactory factory = new com.rabbitmq.client.ConnectionFactory();
+    factory.setHost("localhost");
+    try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
+      channel.queueDeclare(topic, true, false, false, null);
+
+      for(int i=0; i<nMsg; i++){
+        String message = String.valueOf(i);
+        channel.basicPublish("", topic, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes("UTF-8"));
+//        System.out.println(" [x] Sent '" + message + "'");
+      }
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (TimeoutException e) {
+      e.printStackTrace();
     }
-    producer.close();
   }
 }

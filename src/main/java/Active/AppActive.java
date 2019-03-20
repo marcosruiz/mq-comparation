@@ -168,7 +168,6 @@ public class AppActive {
 
   public static void consume(int messages, Session session, String topic) {
     try {
-
       // Create the destination (Topic or Queue)
       Destination destination = session.createQueue(topic);
 

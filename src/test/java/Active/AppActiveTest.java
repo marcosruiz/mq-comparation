@@ -31,6 +31,8 @@ public class AppActiveTest {
     String topic = "topic";
     int nMsg = 1000000;
     mainSecuential(nMsg, topic);
+    Runtime.getRuntime().totalMemory();
+    Runtime.getRuntime().freeMemory();
   }
 
   /**

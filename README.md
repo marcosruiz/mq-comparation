@@ -35,5 +35,8 @@ Importante: Si no creas tú la cola se creará una automáticamente con una part
 
 ## ActiveMQ
 
+ActiveMQ se lanza desde el propio código por lo que no es necesario ejecutar ninguna instrucción en el terminal.
+
 ## RabbitMQ
+
 
