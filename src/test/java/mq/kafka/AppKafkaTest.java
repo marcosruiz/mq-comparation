@@ -2,6 +2,8 @@ package mq.kafka;
 
 import org.junit.jupiter.api.Test;
 
+import javax.jms.JMSException;
+
 import static mq.kafka.AppKafka.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,24 +24,24 @@ public class AppKafkaTest {
    */
 
   @Test
-  void testSec10KTest2(){
+  void testSec10KTest2() throws JMSException {
     String topic = "test_2";
     int nMsg = 10000;
-    mainSecuential(nMsg,topic);
+    new MQKafka().produceAndConsume(nMsg,topic);
   }
 
   @Test
-  void testSec600KTest2(){
+  void testSec600KTest2() throws JMSException {
     String topic = "test_2";
     int nMsg = 600000;
-    mainSecuential(nMsg,topic);
+    new MQKafka().produceAndConsume(nMsg,topic);
   }
 
   @Test
-  void testSec1MTest2(){
+  void testSec1MTest2() throws JMSException {
     String topic = "test_2";
     int nMsg = 1000000;
-    mainSecuential(nMsg,topic);
+    new MQKafka().produceAndConsume(nMsg,topic);
   }
 
   /**
@@ -47,24 +49,24 @@ public class AppKafkaTest {
    */
 
   @Test
-  void testSec10KTest1(){
+  void testSec10KTest1() throws JMSException {
     String topic = "test_1";
     int nMsg = 10000;
-    mainSecuential(nMsg,topic);
+    new MQKafka().produceAndConsume(nMsg,topic);
   }
 
   @Test
-  void testSec600KTest1(){
+  void testSec600KTest1() throws JMSException {
     String topic = "test_1";
     int nMsg = 600000;
-    mainSecuential(nMsg,topic);
+    new MQKafka().produceAndConsume(nMsg,topic);
   }
 
   @Test
-  void testSec1MTest1(){
+  void testSec1MTest1() throws JMSException {
     String topic = "test_1";
     int nMsg = 1000000;
-    mainSecuential(nMsg,topic);
+    new MQKafka().produceAndConsume(nMsg,topic);
   }
 
   /**
@@ -72,17 +74,17 @@ public class AppKafkaTest {
    */
 
   @Test
-  void testMT600KTest2() throws InterruptedException {
+  void testMT600KTest2() throws InterruptedException, JMSException {
     String topic = "test_2";
     int nMsg = 600000;
-    mainMultiThread(nMsg, topic, 1, 1);
+    new MQKafka().produceAndConsumeMT(nMsg, topic, 1, 1);
   }
 
   @Test
-  void testMT1MTest2() throws InterruptedException {
+  void testMT1MTest2() throws InterruptedException, JMSException {
     String topic = "test_2";
     int nMsg = 1000000;
-    mainMultiThread(nMsg, topic, 1, 1);
+    new MQKafka().produceAndConsumeMT(nMsg, topic, 1, 1);
   }
 
 
@@ -91,18 +93,18 @@ public class AppKafkaTest {
    */
 
   @Test
-  void testMT600KTest1() throws InterruptedException {
+  void testMT600KTest1() throws InterruptedException, JMSException {
     String topic = "test_1";
     int nMsg = 600000;
-    mainMultiThread(nMsg, topic, 1, 10);
+    new MQKafka().produceAndConsumeMT(nMsg, topic, 1, 10);
   }
 
 
   @Test
-  void testMT1MTest1() throws InterruptedException {
+  void testMT1MTest1() throws InterruptedException, JMSException {
     String topic = "test_1";
     int nMsg = 1000000;
-    mainMultiThread(nMsg, topic, 1, 10);
+    new MQKafka().produceAndConsumeMT(nMsg, topic, 1, 10);
   }
 
 
