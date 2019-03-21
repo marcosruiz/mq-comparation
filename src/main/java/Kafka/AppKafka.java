@@ -1,5 +1,6 @@
 package Kafka;
 
+import MQ.AppMQ;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -15,7 +16,7 @@ import java.util.Properties;
 /**
  * Clase main para sacar metricas de Kafka
  */
-public class AppKafka {
+public class AppKafka extends AppMQ {
 
   /**
    * Producimos y recibimos 1 millon de mensajes en test_1
@@ -45,27 +46,13 @@ public class AppKafka {
     System.out.println("PRODUCTOR");
     long timeStart = System.currentTimeMillis();
     produce(nMsg, topic);
-    printStats(nMsg, timeStart);
+    printStats(timeStart, nMsg);
 
     // Consumer
     System.out.println("CONSUMIDOR");
     timeStart = System.currentTimeMillis();
     consume(nMsg, topic);
-    printStats(nMsg, timeStart);
-  }
-
-  /**
-   * Muestra por la salida estandar algunos stats
-   * @param timeStart
-   * @param nMsg
-   */
-  private static void printStats(int nMsg, long timeStart) {
-    long timeEnd = System.currentTimeMillis();
-    double diffMillis = timeEnd - timeStart;
-    double diffSec = diffMillis / 1000;
-    double vel = nMsg / diffSec;
-    System.out.println("Tiempo total: " + diffSec + " seconds");
-    System.out.println("Velocidad: " + vel + " msg/seg");
+    printStats(timeStart, nMsg);
   }
 
   /**
@@ -129,7 +116,7 @@ public class AppKafka {
       alProd.get(i).join();
     }
 
-    printStats(nMsg, timeStart);
+    printStats(timeStart, nMsg);
 
     // Control consumers
     System.out.println("CONSUMERS");
@@ -143,7 +130,7 @@ public class AppKafka {
       alCons.get(i).join();
     }
 
-    printStats(nMsg, timeStart);
+    printStats(timeStart, nMsg);
   }
 
   /**

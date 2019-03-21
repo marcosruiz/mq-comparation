@@ -1,8 +1,11 @@
 package Rabbit;
 
+
+import MQ.AppMQ;
+
 import java.util.ArrayList;
 
-public class AppRabbit {
+public class AppRabbit extends AppMQ {
 
   public static void main(String[] args) throws InterruptedException {
     final int nMsg = 10000;
@@ -23,15 +26,6 @@ public class AppRabbit {
     timeStart = System.currentTimeMillis();
     consume(nMsg, topic);
     printStats(timeStart, nMsg);
-  }
-
-  private static void printStats(long timeStart, int nMsg) {
-    long timeEnd = System.currentTimeMillis();
-    double diffMillis = timeEnd - timeStart;
-    double diffSec = diffMillis / 1000;
-    double vel = nMsg / diffSec;
-    System.out.println("Tiempo total: " + diffSec + " seconds");
-    System.out.println("Velocidad: " + vel + " msg/seg");
   }
 
   public static void mainMultiThread(int nMsg, String topic, int nProd, int nCons) throws InterruptedException {
