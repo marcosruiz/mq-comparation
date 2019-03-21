@@ -1,13 +1,11 @@
-package Rabbit;
+package mq.rabbit;
 
 import org.junit.jupiter.api.Test;
 
 import javax.jms.JMSException;
 
-import java.util.concurrent.TimeUnit;
-
-import static Rabbit.AppRabbit.mainMultiThread;
-import static Rabbit.AppRabbit.mainSecuential;
+import static mq.rabbit.AppRabbit.mainMultiThread;
+import static mq.rabbit.AppRabbit.mainSecuential;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AppRabbitTest {

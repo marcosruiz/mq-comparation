@@ -1,6 +1,6 @@
-package Kafka;
+package mq.kafka;
 
-import MQ.AppMQ;
+import mq.MQStats;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * Clase main para sacar metricas de Kafka
  */
-public class AppKafka extends AppMQ {
+public class AppKafka {
 
   /**
    * Producimos y recibimos 1 millon de mensajes en test_1
@@ -46,13 +46,13 @@ public class AppKafka extends AppMQ {
     System.out.println("PRODUCTOR");
     long timeStart = System.currentTimeMillis();
     produce(nMsg, topic);
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
 
     // Consumer
     System.out.println("CONSUMIDOR");
     timeStart = System.currentTimeMillis();
     consume(nMsg, topic);
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
   }
 
   /**
@@ -116,7 +116,7 @@ public class AppKafka extends AppMQ {
       alProd.get(i).join();
     }
 
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
 
     // Control consumers
     System.out.println("CONSUMERS");
@@ -130,7 +130,7 @@ public class AppKafka extends AppMQ {
       alCons.get(i).join();
     }
 
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
   }
 
   /**

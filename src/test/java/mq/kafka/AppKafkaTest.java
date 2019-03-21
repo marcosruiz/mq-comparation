@@ -1,9 +1,8 @@
-package Kafka;
+package mq.kafka;
 
-import Kafka.AppKafka;
 import org.junit.jupiter.api.Test;
 
-import static Kafka.AppKafka.*;
+import static mq.kafka.AppKafka.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**

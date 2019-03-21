@@ -1,4 +1,4 @@
-package Rabbit;
+package mq.rabbit;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

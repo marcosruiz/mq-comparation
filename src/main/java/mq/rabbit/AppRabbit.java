@@ -1,11 +1,11 @@
-package Rabbit;
+package mq.rabbit;
 
 
-import MQ.AppMQ;
+import mq.MQStats;
 
 import java.util.ArrayList;
 
-public class AppRabbit extends AppMQ {
+public class AppRabbit {
 
   public static void main(String[] args) throws InterruptedException {
     final int nMsg = 10000;
@@ -19,13 +19,13 @@ public class AppRabbit extends AppMQ {
     System.out.println("PRODUCTOR");
     long timeStart = System.currentTimeMillis();
     produce(nMsg, topic);
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
 
     // CONSUMIDOR
     System.out.println("CONSUMIDOR");
     timeStart = System.currentTimeMillis();
     consume(nMsg, topic);
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
   }
 
   public static void mainMultiThread(int nMsg, String topic, int nProd, int nCons) throws InterruptedException {
@@ -37,7 +37,7 @@ public class AppRabbit extends AppMQ {
     for (int i = 0; i < nProd; i++) {
       alProd.get(i).join();
     }
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
 
     // START CONSUMERS
     System.out.println("CONSUMIDOR");
@@ -47,7 +47,7 @@ public class AppRabbit extends AppMQ {
     for (int i = 0; i < nCons; i++) {
       alCons.get(i).join();
     }
-    printStats(timeStart, nMsg);
+    MQStats.printStats(timeStart, nMsg);
   }
 
   public static void produce(int nMsg, String topic) {
