@@ -23,7 +23,7 @@ public class ProdRabbitThread implements Runnable{
     com.rabbitmq.client.ConnectionFactory factory = new com.rabbitmq.client.ConnectionFactory();
     factory.setHost("localhost");
     try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
-      channel.queueDeclare(topic, true, false, false, null);
+//      channel.queueDeclare(topic, true, false, false, null);
 
       for(int i=0; i<nMsg; i++){
         String message = String.valueOf(i);

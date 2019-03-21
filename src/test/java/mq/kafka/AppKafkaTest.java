@@ -44,6 +44,13 @@ public class AppKafkaTest {
     new MQKafka().produceAndConsume(nMsg,topic);
   }
 
+  @Test
+  void testSec100MTest2() throws JMSException {
+    String topic = "test_2";
+    int nMsg = 100000000;
+    new MQKafka().produceAndConsume(nMsg,topic);
+  }
+
   /**
    * SECUENTIAL: test_1
    */

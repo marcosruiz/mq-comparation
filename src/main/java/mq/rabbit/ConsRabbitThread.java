@@ -26,7 +26,7 @@ public class ConsRabbitThread implements Runnable {
       final Connection connection = factory.newConnection();
       final Channel channel = connection.createChannel();
 
-      channel.queueDeclare(topic, true, false, false, null);
+//      channel.queueDeclare(topic, true, false, false, null);
 
       channel.basicQos(1);
 

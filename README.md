@@ -25,3 +25,15 @@ ActiveMQ se lanza desde el propio código por lo que no es necesario ejecutar ni
 
 RabbitMQ se lanza desde el propio código por lo que no es necesario ejecutar ninguna instrucción en el terminal.
 
+### Configurar colas
+
+
+
+## Conclusiones
+
+### Velocidad
+
+### CPU
+
+### Memoria RAM
+
