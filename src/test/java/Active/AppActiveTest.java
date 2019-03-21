@@ -45,6 +45,13 @@ public class AppActiveTest {
    */
 
   @Test
+  void testMT10K() throws JMSException, InterruptedException {
+    String topic = "TEST.QUEUE";
+    int nMsg = 10000;
+    mainMultiThread(nMsg, topic, 1, 10);
+  }
+
+  @Test
   void tesMT600K() throws JMSException, InterruptedException {
     String topic = "topic";
     int nMsg = 600000;

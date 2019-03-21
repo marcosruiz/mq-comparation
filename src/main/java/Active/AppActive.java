@@ -8,18 +8,57 @@ import java.util.ArrayList;
 public class AppActive {
 
   public static void main(String[] args) throws Exception {
-    int nMsg = 1000000;
+    int nMsg = 20;
     String topic = "TEST.FOO";
 //    mainSecuential(nMsg, topic);
-    mainMultiThread(nMsg, topic, 10, 10);
+        mainMultiThread(nMsg, topic, 1, 10);
   }
 
   /**
-   * Producimos y consumimos con un hilo por productor y por consumidor
+   * Producimos y consumimos con un consumidor y un productor
+   * @param nMsg
+   * @param topic
+   * @throws JMSException
+   */
+  public static void mainSecuential(int nMsg, String topic) throws JMSException {
+    // Create a ConnectionFactory
+    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+    // Create a Connection
+    Connection connection = connectionFactory.createConnection();
+    connection.start();
+    // Create a Session
+    Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+    //PRODUCTOR
+    System.out.println("PRODUCTOR");
+    long timeStart = System.currentTimeMillis();
+    produce(nMsg, topic);
+    printStats(timeStart, nMsg);
+
+    // CONSUMIDOR
+    System.out.println("CONSUMIDOR");
+    timeStart = System.currentTimeMillis();
+    consume(nMsg, topic);
+    printStats(timeStart, nMsg);
+
+    session.close();
+    connection.close();
+  }
+
+  /**
+   * Producimos y consumimos lanzando un hilo por cada productor y cada consumidor
    * @param nMsg
    * @param topic
    */
   public static void mainMultiThread(int nMsg, String topic, int nProd, int nCons) throws JMSException, InterruptedException {
+    // Create a ConnectionFactory
+    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+    // Create a Connection
+    Connection connection = connectionFactory.createConnection();
+    connection.start();
+    // Create a Session
+    Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
     // START PRODUCERS
     System.out.println("PRODUCTOR");
     long timeStart = System.currentTimeMillis();
@@ -39,11 +78,14 @@ public class AppActive {
       alCons.get(i).join();
     }
     printStats(timeStart, nMsg);
+
+    session.close();
+    connection.close();
   }
 
 
   /**
-   * Extreae nMsg mensajes del topic especificado en nCons hilos
+   * Devuelve nCons hilos los cuales han sido lanzados. En total consumirán nMsg en el topic especificado.
    *
    * @param nMsg
    * @param nCons
@@ -63,7 +105,7 @@ public class AppActive {
   }
 
   /**
-   * Inserta nMsg mensajes en el topic especificado en nProd hilos
+   * Devuelve nProd hilos los cuales han sido lanzados. En total producirán nMsg en el topic especificado.
    *
    * @param nMsg
    * @param nProd
@@ -81,41 +123,24 @@ public class AppActive {
   }
 
   /**
-   * Producimos y consumimos
-   * @param nMsg
-   * @param topic
-   * @throws JMSException
-   */
-  public static void mainSecuential(int nMsg, String topic) throws JMSException {
-    //PRODUCTOR
-    System.out.println("PRODUCTOR");
-    long timeStart = System.currentTimeMillis();
-    produce(nMsg, topic);
-    printStats(timeStart, nMsg);
-
-    // CONSUMIDOR
-    System.out.println("CONSUMIDOR");
-    timeStart = System.currentTimeMillis();
-    consume(nMsg, topic);
-    printStats(timeStart, nMsg);
-  }
-
-  /**
    * Muestra por la salida estandar algunos stats
    * @param timeStart
    * @param nMsg
    */
   private static void printStats(long timeStart, int nMsg) {
-    long totalMem = Runtime.getRuntime().totalMemory();
-    long freeMem = Runtime.getRuntime().freeMemory();
-    long usedMem = totalMem-freeMem;
-    long maxMem = Runtime.getRuntime().maxMemory();
+    // Tiempo y velocidad
     long timeEnd = System.currentTimeMillis();
     double diffMillis = timeEnd - timeStart;
     double diffSec = diffMillis / 1000;
     double vel = nMsg / diffSec;
     System.out.println("Tiempo total: " + diffSec + " seconds");
     System.out.println("Velocidad: " + vel + " msg/seg");
+
+    // Memoria RAM
+    long totalMem = Runtime.getRuntime().totalMemory();
+    long freeMem = Runtime.getRuntime().freeMemory();
+    long usedMem = totalMem-freeMem;
+    long maxMem = Runtime.getRuntime().maxMemory();
     System.out.println("Memory used: " + usedMem);
     System.out.println("Memory max: " + maxMem);
   }

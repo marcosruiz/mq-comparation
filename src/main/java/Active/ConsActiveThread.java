@@ -45,10 +45,12 @@ public class ConsActiveThread implements Runnable, ExceptionListener {
           String text = textMessage.getText();
           i++;
 //          System.out.println("Received: " + text);
+          System.out.print("\r" + i + "/" + nMsg);
         } else {
           System.out.println("Received: " + message);
         }
       }
+      System.out.println();
       consumer.close();
       session.close();
       connection.close();

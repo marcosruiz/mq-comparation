@@ -5,8 +5,9 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.*;
 
 public class ProdActiveThread implements Runnable {
+
   private final int nMsg;
-  String topic;
+  private final String topic;
 
   public ProdActiveThread(int nMsg, String topic) {
     this.topic = topic;
@@ -37,11 +38,14 @@ public class ProdActiveThread implements Runnable {
         String text = Integer.toString(i);
         TextMessage message = session.createTextMessage(text);
         // Tell the producer to send the message
-        // System.out.println("Sent message: " + message.hashCode() + " : " + Thread.currentThread().getName());
         producer.send(message);
+//        System.out.println("Sent message: " + message.hashCode() + " : " + Thread.currentThread().getName());
+        System.out.print("\r" + (i+1) + "/" + nMsg);
       }
+      System.out.println();
 
       // Clean up
+      producer.close();
       session.close();
       connection.close();
     } catch (Exception e) {
