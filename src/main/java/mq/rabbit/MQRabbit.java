@@ -12,7 +12,7 @@ public class MQRabbit implements MQInt, MQMTInt {
   @Override
   public void produceAndConsume(int nMsg, String topic) {
     //PRODUCTOR
-    System.out.println("PRODUCTOR");
+    System.out.println("\nPRODUCTOR");
     long timeStart = System.currentTimeMillis();
     produce(nMsg, topic);
     MQStats.printStats(timeStart, nMsg);

@@ -3,31 +3,23 @@ package mq.kafka;
 import mq.MQInt;
 import mq.MQMTInt;
 import mq.MQStats;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 
 import javax.jms.JMSException;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 
 public class MQKafka implements MQInt, MQMTInt {
 
   @Override
-  public void produceAndConsume(int nMsg, String topic) throws JMSException {
+  public void produceAndConsume(int nMsg, String topic) {
     //Producer
-    System.out.println("PRODUCTOR");
+    System.out.println("\nPRODUCERS");
     long timeStart = System.currentTimeMillis();
     produce(nMsg, topic);
     MQStats.printStats(timeStart, nMsg);
 
     // Consumer
-    System.out.println("CONSUMIDOR");
+    System.out.println("CONSUMERS");
     timeStart = System.currentTimeMillis();
     consume(nMsg, topic);
     MQStats.printStats(timeStart, nMsg);
@@ -35,30 +27,12 @@ public class MQKafka implements MQInt, MQMTInt {
 
   @Override
   public void produce(int nMsg, String topic) {
-    Producer<String, String> producer = new KafkaProducer<>(getPropsProd());
-    for (int i = 0; i < nMsg; i++) {
-      producer.send(new ProducerRecord<String, String>(topic, Integer.toString(i), Integer.toString(i)));
-    }
-    producer.close();
+    new ProdKafkaThread(getPropsProd(), nMsg, topic).run();
   }
 
   @Override
   public void consume(int nMsg, String topic) {
-    KafkaConsumer<String, String> consumer = new KafkaConsumer<>(getPropsCons());
-    consumer.subscribe(Arrays.asList(topic));
-    long timeStart = System.currentTimeMillis();
-    int i = 0;
-    while (i < nMsg) {
-      ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-      for (ConsumerRecord<String, String> record : records) {
-        // System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
-        i++;
-        // double percentage = (i / nMsg) * 100;
-        // System.out.print("\rConsumiendo: " + percentage + " %");
-      }
-    }
-    consumer.unsubscribe();
-    // System.out.println("");
+    new ConsKafkaThread(getPropsCons(), nMsg, topic).run();
   }
 
   @Override

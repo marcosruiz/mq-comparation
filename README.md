@@ -15,23 +15,7 @@ MQ-Comparation es un proyecto que busca comparar los 3 servicios de colas de men
 
 #### Script para iniciar Zookeeper, Kafka y la cola
 
-En la raiz del directorio de kafka
-
-```
-bin/zookeeper-server-start.sh config/zookeeper.properties &
-sleep 5
-bin/kafka-server-start.sh config/server.properties &
-sleep 2
-bin/kafka-server-start.sh config/server-1.properties &
-sleep 2
-bin/kafka-server-start.sh config/server-2.properties &
-sleep 2
-bin/kafka-server-start.sh config/server-3.properties &
-sleep 2
-bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 10 --topic test_1
-```
-
-Importante: Si no creas tú la cola se creará una automáticamente con una partición y con 1 de factor de replicación, es decir, una cola equivalente a ejecutar esta linea: `bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test_1`
+Copia el contenido de `$PROJECT_HOME/src/main/resources/kafka_scripts` en `$KAFKA_HOME` para posteriormente ejecutar `start_zookeeper_kafka.sh` que desplegará 1 servidor zookeeper, 4 servidores Kafka y una cola llamada test_1.
 
 ## ActiveMQ
 
@@ -39,4 +23,5 @@ ActiveMQ se lanza desde el propio código por lo que no es necesario ejecutar ni
 
 ## RabbitMQ
 
+RabbitMQ se lanza desde el propio código por lo que no es necesario ejecutar ninguna instrucción en el terminal.
 

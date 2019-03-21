@@ -64,9 +64,22 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- LOG INFO -->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14 -->
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-jdk14</artifactId>-->
+            <!--<version>1.7.26</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
-
-
+        <!-- NO LOG INFO -->
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.26</version>
+        </dependency>
 
 
     </dependencies>

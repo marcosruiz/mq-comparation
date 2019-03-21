@@ -6,8 +6,8 @@ public class AppKafka {
 
   public static void main(String[] args) throws JMSException, InterruptedException {
     int nMsg = 10000;
-    String topic = "test_queue";
+    String topic = "test_1";
     new MQKafka().produceAndConsume(nMsg, topic);
-    new MQKafka().produceAndConsumeMT(nMsg, topic,1,10);
+//    new MQKafka().produceAndConsumeMT(nMsg, topic,1,10);
   }
 }

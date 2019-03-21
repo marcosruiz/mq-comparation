@@ -35,7 +35,7 @@ public class MQActive implements MQInt, MQMTInt{
     Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
     //PRODUCTOR
-    System.out.println("PRODUCTOR");
+    System.out.println("\nPRODUCTOR");
     long timeStart = System.currentTimeMillis();
     this.produce(nMsg, topic);
     MQStats.printStats(timeStart, nMsg);
