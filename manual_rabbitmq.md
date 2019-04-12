@@ -34,11 +34,27 @@ rabbitmqadmin publish exchange=amq.default routing_key=test payload="hello, worl
 ```
 
 Para el fichero de configuración llamado `rabbitmq.conf` se copia en `/etc/rabbitmq`
-
+```
+cp ~/Descargas/rabbitmq.conf /etc/rabbitmq/
+```
 
 ```
 //toCopyAndPaste
 ```
+
+## Cluster
+[RabbitMQ Tutorial Cluster en Español](https://magmax.org/blog/colas-de-mensajes-rabbitmq/)
+
+Estatus
+```
+sudo rabbitmqctl cluster_status
+sudo rabbitmqctl stop_app
+sudo rabbitmqctl join_cluster rabbit@jarvis
+sudo rabbitmqctl start_app
+sudo rabbitmqctl cluster_status
+```
+
+
 
 
 [Información sobre el fichero de configuración](https://www.rabbitmq.com/configure.html)

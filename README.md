@@ -27,8 +27,6 @@ RabbitMQ se lanza desde el propio código por lo que no es necesario ejecutar ni
 
 ### Configurar colas
 
-
-
 ## Conclusiones
 
 ### Velocidad
@@ -37,3 +35,8 @@ RabbitMQ se lanza desde el propio código por lo que no es necesario ejecutar ni
 
 ### Memoria RAM
 
+## Comparación entre sistemas de archivos distribuidos
+
+### Hadoop
+### Spark
+### FTP

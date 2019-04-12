@@ -17,35 +17,16 @@ Para que los comandos funcionen debes estar en el directorio raiz de Kafka
 
 ## Topics
 
-- Crear un 'topic'
-
-`bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test`
-
-- Eliminar un 'topic'
-
-`bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic test`
-
-- Describir topic
-
-`bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test`
-
-- Listar 'topics'
-
-`bin/kafka-topics.sh --list --zookeeper localhost:2181`
-
-- Editar 'topic': Añadir partitions
-
-`bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic test --partitions 10`
-
-- Editar 'topic': Editar replication
-
-`bin/kafka-reassign-partitions.sh --zookeeper localhost:2181 --reassignment-json-file edit-replication-factor.json --execute`
-
-- Ver consumer group
-
-`bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group test`
-
-`bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --state --group test`
+Descripción | Instrucción
+---|---
+Crear un 'topic' | `bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test`
+Eliminar un 'topic' | `bin/kafka-topics.sh --delete --zookeeper localhost:2181 --topic test`
+Describir topic | `bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic test`
+Listar 'topics' | `bin/kafka-topics.sh --list --zookeeper localhost:2181`
+Editar 'topic': Añadir partitions | `bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic test --partitions 10`
+Editar 'topic': Editar replication | `bin/kafka-reassign-partitions.sh --zookeeper localhost:2181 --reassignment-json-file edit-replication-factor.json --execute`
+Ver consumer group | `bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group test`
+Describir consumer group | `bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --state --group test`
 
 **edit-replication-factor.json**
 ```

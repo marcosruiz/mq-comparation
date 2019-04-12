@@ -21,19 +21,24 @@ public class ConsRabbitThread implements Runnable {
   @Override
   public void run() {
     try {
-      com.rabbitmq.client.ConnectionFactory factory = new ConnectionFactory();
+      ConnectionFactory factory = new ConnectionFactory();
       factory.setHost("localhost");
+      factory.setPort(5672);
+      factory.setUsername("guest");
+      factory.setPassword("guest");
+      factory.setVirtualHost("/");
       final Connection connection = factory.newConnection();
       final Channel channel = connection.createChannel();
+//      channel.basicQos(1);
 
 //      channel.queueDeclare(topic, true, false, false, null);
 
-      channel.basicQos(1);
-
+      String message;
+      GetResponse response;
       for(int i=0; i<nMsg; i++){
-        GetResponse response = channel.basicGet(topic, true);
+        response = channel.basicGet(topic, true);
         if (response != null) {
-          String message = new String(response.getBody(), "UTF-8");
+          message = new String(response.getBody(), "UTF-8");
 //          System.out.println("Received '" + message + "'");
         }
       }
